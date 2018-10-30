@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { Link } from 'bisheng/router';
 import { Row, Col, Menu, Icon } from 'antd';
 import classNames from 'classnames';
-import MobileMenu from 'rc-drawer-menu';
+import MobileMenu from 'rc-drawer';
 import Article from './Article';
 import ComponentDoc from './ComponentDoc';
 import * as utils from '../utils';
@@ -62,23 +62,13 @@ export default class MainContent extends React.Component {
     if (!prevProps || prevProps.location.pathname !== location.pathname) {
       this.bindScroller();
     }
-    if (!prevProps || (!window.location.hash && prevProps && prevProps.location.pathname !== location.pathname)) {
+    if (!window.location.hash && prevProps && prevProps.location.pathname !== location.pathname) {
       document.body.scrollTop = 0;
       document.documentElement.scrollTop = 0;
-      return;
     }
-    if (this.timer) {
-      clearTimeout(this.timer);
-    }
-    this.timer = setTimeout(() => {
-      if (window.location.hash) {
-        document.querySelector(window.location.hash).scrollIntoView();
-      }
-    }, 10);
   }
 
   componentWillUnmount() {
-    clearTimeout(this.timer);
     this.scroller.disable();
   }
 
@@ -130,7 +120,7 @@ export default class MainContent extends React.Component {
     }
   }
 
-  generateMenuItem(isTop, item) {
+  generateMenuItem(isTop, item, { before = null, after = null }) {
     const { intl: { locale } } = this.context;
     const key = fileNameToPath(item.filename);
     const title = item.title[locale] || item.title;
@@ -145,7 +135,7 @@ export default class MainContent extends React.Component {
         to={utils.getLocalizedPathname(/^components/.test(url) ? `${url}/` : url, locale === 'zh-CN')}
         disabled={disabled}
       >
-        {text}
+        {before}{text}{after}
       </Link>) : (
         <a
           href={item.link}
@@ -154,7 +144,7 @@ export default class MainContent extends React.Component {
           disabled={disabled}
           className="menu-item-link-outside"
         >
-          {text} <Icon type="export" />
+          {before}{text} <Icon type="export" />{after}
         </a>);
 
     return (
@@ -164,7 +154,7 @@ export default class MainContent extends React.Component {
     );
   }
 
-  getMenuItems() {
+  getMenuItems(footerNavIcons = {}) {
     const { themeConfig } = this.props;
     const { intl: { locale } } = this.context;
     const moduleData = getModuleData(this.props);
@@ -184,16 +174,16 @@ export default class MainContent extends React.Component {
                   <Menu.ItemGroup title={child.title} key={child.title}>
                     {child.children.sort((a, b) => {
                       return a.title.charCodeAt(0) - b.title.charCodeAt(0);
-                    }).map(leaf => this.generateMenuItem(false, leaf))}
+                    }).map(leaf => this.generateMenuItem(false, leaf, footerNavIcons))}
                   </Menu.ItemGroup>
                 );
               }
-              return this.generateMenuItem(false, child);
+              return this.generateMenuItem(false, child, footerNavIcons);
             })}
           </SubMenu>
         );
       }
-      return this.generateMenuItem(true, menuItem);
+      return this.generateMenuItem(true, menuItem, footerNavIcons);
     });
   }
 
@@ -226,7 +216,11 @@ export default class MainContent extends React.Component {
     const { openKeys } = this.state;
     const activeMenuItem = getActiveMenuItem(props);
     const menuItems = this.getMenuItems();
-    const { prev, next } = this.getFooterNav(menuItems, activeMenuItem);
+    const menuItemsForFooterNav = this.getMenuItems({
+      before: <Icon className="footer-nav-icon-before" type="left" />,
+      after: <Icon className="footer-nav-icon-after" type="right" />,
+    });
+    const { prev, next } = this.getFooterNav(menuItemsForFooterNav, activeMenuItem);
     const { localizedPageData } = props;
     const mainContainerClass = classNames('main-container', {
       'main-container-component': !!props.demos,
