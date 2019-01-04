@@ -1,9 +1,9 @@
 import * as React from 'react';
 import RcMention, { Nav, toString, toEditorState, getMentions } from 'rc-editor-mention';
+import { polyfill } from 'react-lifecycles-compat';
 import classNames from 'classnames';
 import shallowequal from 'shallowequal';
 import Icon from '../icon';
-
 export type MentionPlacement = 'top' | 'bottom';
 
 export interface MentionProps {
@@ -35,18 +35,29 @@ export interface MentionState {
   focus?: Boolean;
 }
 
-export default class Mention extends React.Component<MentionProps, MentionState> {
+class Mention extends React.Component<MentionProps, MentionState> {
   static getMentions = getMentions;
   static defaultProps = {
     prefixCls: 'ant-mention',
     notFoundContent: '无匹配结果，轻敲空格完成输入',
     loading: false,
     multiLines: false,
-    placement: 'bottom',
+    placement: 'bottom' as MentionPlacement,
   };
   static Nav = Nav;
   static toString = toString;
   static toContentState = toEditorState;
+
+  static getDerivedStateFromProps(nextProps: MentionProps, state: MentionState) {
+    const { suggestions } = nextProps;
+    if (!shallowequal(suggestions, state.suggestions)) {
+      return {
+        suggestions,
+      };
+    }
+    return null;
+  }
+
   private mentionEle: any;
   constructor(props: MentionProps) {
     super(props);
@@ -56,40 +67,29 @@ export default class Mention extends React.Component<MentionProps, MentionState>
     };
   }
 
-  componentWillReceiveProps(nextProps: MentionProps) {
-    const { suggestions } = nextProps;
-    if (!shallowequal(suggestions, this.props.suggestions)) {
-      this.setState({
-        suggestions,
-      });
-    }
-  }
-
   onSearchChange = (value: string, prefix: string) => {
     if (this.props.onSearchChange) {
       return this.props.onSearchChange(value, prefix);
     }
     return this.defaultSearchChange(value);
-  }
+  };
 
   onChange = (editorState: any) => {
     if (this.props.onChange) {
       this.props.onChange(editorState);
     }
-  }
+  };
 
-  defaultSearchChange(value: String): void {
+  defaultSearchChange(value: string): void {
     const searchValue = value.toLowerCase();
-    const filteredSuggestions = (this.props.suggestions || []).filter(
-      suggestion => {
-        if (suggestion.type && suggestion.type === Nav) {
-          return suggestion.props.value ?
-            suggestion.props.value.toLowerCase().indexOf(searchValue) !== -1
-            : true;
-        }
-        return suggestion.toLowerCase().indexOf(searchValue) !== -1;
-      },
-    );
+    const filteredSuggestions = (this.props.suggestions || []).filter(suggestion => {
+      if (suggestion.type && suggestion.type === Nav) {
+        return suggestion.props.value
+          ? suggestion.props.value.toLowerCase().indexOf(searchValue) !== -1
+          : true;
+      }
+      return suggestion.toLowerCase().indexOf(searchValue) !== -1;
+    });
     this.setState({
       suggestions: filteredSuggestions,
     });
@@ -102,7 +102,8 @@ export default class Mention extends React.Component<MentionProps, MentionState>
     if (this.props.onFocus) {
       this.props.onFocus(ev);
     }
-  }
+  };
+
   onBlur = (ev: React.FocusEvent<HTMLElement>) => {
     this.setState({
       focus: false,
@@ -110,13 +111,16 @@ export default class Mention extends React.Component<MentionProps, MentionState>
     if (this.props.onBlur) {
       this.props.onBlur(ev);
     }
-  }
+  };
+
   focus = () => {
     this.mentionEle._editor.focusEditor();
-  }
+  };
+
   mentionRef = (ele: any) => {
     this.mentionEle = ele;
-  }
+  };
+
   render() {
     const { className = '', prefixCls, loading, placement } = this.props;
     const { suggestions, focus } = this.state;
@@ -124,10 +128,7 @@ export default class Mention extends React.Component<MentionProps, MentionState>
       [`${prefixCls}-active`]: focus,
       [`${prefixCls}-placement-top`]: placement === 'top',
     });
-
-    const notFoundContent = loading
-      ? <Icon type="loading" />
-      : this.props.notFoundContent;
+    const notFoundContent = loading ? <Icon type="loading" /> : this.props.notFoundContent;
 
     return (
       <RcMention
@@ -144,3 +145,7 @@ export default class Mention extends React.Component<MentionProps, MentionState>
     );
   }
 }
+
+polyfill(Mention);
+
+export default Mention;

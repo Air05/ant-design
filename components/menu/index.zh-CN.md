@@ -1,7 +1,7 @@
 ---
 category: Components
 cols: 1
-type: Navigation
+type: 导航
 title: Menu
 subtitle: 导航菜单
 ---
@@ -56,6 +56,7 @@ subtitle: 导航菜单
 | --- | --- | --- | --- |
 | disabled | 是否禁用 | boolean | false |
 | key | item 的唯一标志 | string |  |
+| title | 设置收缩时展示的悬浮标题 | string |  |
 
 ### Menu.SubMenu
 

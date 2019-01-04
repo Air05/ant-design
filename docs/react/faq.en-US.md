@@ -3,7 +3,7 @@ order: 9
 title: FAQ
 ---
 
-Search in the questions about React first: https://reactfaq.site .
+Here are the frequently asked questions about Ant Design and antd that you should look up before you ask in community or create new issue. We also maintain a [FAQ issues label](https://github.com/ant-design/ant-design/issues?q=label%3AFAQ+is%3Aclosed) for common github issues.
 
 ---
 
@@ -49,7 +49,7 @@ Try [babel-plugin-import](https://github.com/ant-design/babel-plugin-import), or
 
 ```jsx
 import Menu from 'antd/lib/menu';
-import 'antd/lib/button/style/css';
+import 'antd/lib/menu/style/css';
 ```
 
 or (ES6 way with tree shaking):
@@ -108,8 +108,9 @@ If you need some features which should not be included in antd, try to extend an
 
 ### How to spell Ant Design correctly?
 
-- ✅ **Ant Design**: Capitalized with space, for the design language
-- ✅ **antd**: all lowercase, for the React UI library
+- ✅ **Ant Design**: Capitalized with space, for the design language.
+- ✅ **antd**: all lowercase, for the React UI library.
+- ✅ **ant.design**：For ant.design website url.
 
 Here are some typical wrong examples:
 
