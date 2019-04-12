@@ -14,6 +14,7 @@ export interface AbstractCheckboxProps<T> {
   style?: React.CSSProperties;
   disabled?: boolean;
   onChange?: (e: T) => void;
+  onClick?: React.MouseEventHandler<any>;
   onMouseEnter?: React.MouseEventHandler<any>;
   onMouseLeave?: React.MouseEventHandler<any>;
   onKeyPress?: React.KeyboardEventHandler<any>;
@@ -99,6 +100,7 @@ export default class Checkbox extends React.Component<CheckboxProps, {}> {
         }
         checkboxGroup.toggleOption({ label: children, value: props.value });
       };
+      checkboxProps.name = checkboxGroup.name;
       checkboxProps.checked = checkboxGroup.value.indexOf(props.value) !== -1;
       checkboxProps.disabled = props.disabled || checkboxGroup.disabled;
     }

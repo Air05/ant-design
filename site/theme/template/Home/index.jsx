@@ -29,10 +29,10 @@ function getStyle() {
     #header #logo {
       padding: 0;
     }
-    #header .nav-phone-icon {
-      display: none;
-    }
     #header #nav .ant-menu-item {
+      border-color: transparent;
+    }
+    #header #nav .ant-menu-submenu {
       border-color: transparent;
     }
     #header #nav .ant-menu-item.hide-in-home-page {
@@ -53,7 +53,7 @@ function getStyle() {
     }
     @media only screen and (max-width: 767.99px) {
       #footer .footer-wrap{
-        padding: 40px 24px
+        padding: 40px 24px;
       }
       footer .footer-wrap .ant-row {
         padding: 0;

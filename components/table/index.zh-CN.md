@@ -72,7 +72,7 @@ const columns = [{
 | indentSize | 展示树形数据时，每层缩进的宽度，以 px 为单位 | number | 15 |
 | loading | 页面是否加载中 | boolean\|[object](https://ant.design/components/spin-cn/#API) ([更多](https://github.com/ant-design/ant-design/issues/4544#issuecomment-271533135)) | false |
 | locale | 默认文案设置，目前包括排序、过滤、空数据文案 | object | filterConfirm: '确定' <br> filterReset: '重置' <br> emptyText: '暂无数据' <br> [默认值](https://github.com/ant-design/ant-design/issues/575#issuecomment-159169511) |
-| pagination | 分页器，参考[配置项](#pagination)或 [pagination](/components/pagination/)，设为 false 时不展示和进行分页 | object |  |
+| pagination | 分页器，参考[配置项](#pagination)或 [pagination](/components/pagination/) 文档，设为 false 时不展示和进行分页 | object |  |
 | rowClassName | 表格行的类名 | Function(record, index):string | - |
 | rowKey | 表格行 key 的取值，可以是字符串或一个函数 | string\|Function(record):string | 'key' |
 | rowSelection | 表格行是否可选择，[配置项](#rowSelection) | object | null |
@@ -132,6 +132,7 @@ const columns = [{
 | render | 生成复杂数据的渲染函数，参数分别为当前行的值，当前行数据，行索引，@return里面可以设置表格[行/列合并](#components-table-demo-colspan-rowspan) | Function(text, record, index) {} | - |
 | sorter | 排序函数，本地排序使用一个函数(参考 [Array.sort](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/sort) 的 compareFunction)，需要服务端排序可设为 true | Function\|boolean | - |
 | sortOrder | 排序的受控属性，外界可用此控制列的排序，可设置为 `'ascend'` `'descend'` `false` | boolean\|string | - |
+| sortDirections | 支持的排序方式，取值为 `'ascend'` `'descend'` | Array | `['ascend', 'descend']` |
 | title | 列头显示文字 | ReactNode\|({ sortOrder, filters }) => ReactNode | - |
 | width | 列宽度 | string\|number | - |
 | onCell | 设置单元格属性 | Function(record, rowIndex) | - |
@@ -161,7 +162,7 @@ const columns = [{
 
 | 参数 | 说明 | 类型 | 默认值 |
 | --- | --- | --- | --- |
-| columnWidth | 自定义列表选择框宽度 | string\|number | - |
+| columnWidth | 自定义列表选择框宽度 | string\|number | `60px` |
 | columnTitle | 自定义列表选择框标题 | string\|React.ReactNode | - |
 | fixed | 把选择框列固定在左边 | boolean | - |
 | getCheckboxProps | 选择框的默认属性配置 | Function(record) | - |

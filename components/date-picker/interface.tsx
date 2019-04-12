@@ -1,9 +1,11 @@
 import * as React from 'react';
 import * as moment from 'moment';
 import { TimePickerProps } from '../time-picker';
+import { tuple } from '../_util/type';
 
 export interface PickerProps {
   id?: number | string;
+  name?: string;
   prefixCls?: string;
   inputPrefixCls?: string;
   format?: string | string[];
@@ -31,6 +33,9 @@ export interface SinglePickerProps {
   onChange?: (date: moment.Moment, dateString: string) => void;
 }
 
+const DatePickerModes = tuple('time', 'date', 'month', 'year');
+export type DatePickerMode = (typeof DatePickerModes)[number];
+
 export interface DatePickerProps extends PickerProps, SinglePickerProps {
   className?: string;
   showTime?: TimePickerProps | boolean;
@@ -44,8 +49,10 @@ export interface DatePickerProps extends PickerProps, SinglePickerProps {
     disabledSeconds?: () => number[];
   };
   onOpenChange?: (status: boolean) => void;
-  onOk?: (selectedTime: RangePickerValue) => void;
+  onPanelChange?: (value: moment.Moment | undefined, mode: DatePickerMode) => void;
+  onOk?: (selectedTime: moment.Moment) => void;
   placeholder?: string;
+  mode?: DatePickerMode;
 }
 
 export interface MonthPickerProps extends PickerProps, SinglePickerProps {
@@ -67,13 +74,14 @@ export interface RangePickerProps extends PickerProps {
   defaultPickerValue?: RangePickerValue;
   onChange?: (dates: RangePickerValue, dateStrings: [string, string]) => void;
   onCalendarChange?: (dates: RangePickerValue, dateStrings: [string, string]) => void;
-  onOk?: (selectedTime: moment.Moment[]) => void;
+  onOk?: (selectedTime: RangePickerPresetRange) => void;
   showTime?: TimePickerProps | boolean;
   ranges?: {
     [range: string]: RangePickerPresetRange;
   };
   placeholder?: [string, string];
   mode?: string | string[];
+  separator?: React.ReactNode;
   disabledTime?: (
     current: moment.Moment | undefined,
     type: string,
