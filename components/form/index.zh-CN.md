@@ -45,7 +45,7 @@ title: Form
 | labelCol | （3.14.0 新增，之前的版本只能设置到 FormItem 上。）label 标签布局，同 `<Col>` 组件，设置 `span` `offset` 值，如 `{span: 3, offset: 12}` 或 `sm: {span: 3, offset: 12}` | [object](https://ant.design/components/grid/#Col) |  | 3.14.0 |
 | layout | 表单布局 | 'horizontal'\|'vertical'\|'inline' | 'horizontal' |  |
 | onSubmit | 数据验证成功后回调事件 | Function(e:Event) |  |  |
-| wrapperCol | （3.14.0 新增，之前的版本只能设置到 FormItem 上。）需要为输入控件设置布局样式时，使用该属性，用法同 labelCol | [object](https://ant.design/components/grid/#Col) |  | 3.14.0 |
+| wrapperCol | （3.14.0 新增，之前的版本只能设置到 FormItem 上。）需要为输入控件设置布局样式时，使用该属性，用法同 labelCol | [object](https://ant.design/components/grid-cn/#Col) |  | 3.14.0 |
 | colon | 配置 Form.Item 的 colon 的默认值 | boolean | true | 3.15.0 |
 
 ### Form.create(options)
@@ -83,9 +83,9 @@ this.form // => The instance of CustomizedForm
 
 > 注意：使用 `getFieldsValue` `getFieldValue` `setFieldsValue` 等时，应确保对应的 field 已经用 `getFieldDecorator` 注册过了。
 
-| 方法       | 说明                                     | 类型       | 版本 |
+| 方法 | 说明 | 类型 | 版本 |
 | --- | --- | --- | --- |
-| getFieldDecorator | 用于和表单进行双向绑定，详见下方描述 |  |
+| getFieldDecorator | 用于和表单进行双向绑定，详见下方描述 |  |  |
 | getFieldError | 获取某个输入控件的 Error | Function(name) |  |
 | getFieldsError | 获取一组输入控件的 Error ，如不传入参数，则获取全部组件的 Error | Function(\[names: string\[]]) |  |
 | getFieldsValue | 获取一组输入控件的值，如不传入参数，则获取全部组件的值 | Function(\[fieldNames: string\[]]) |  |
@@ -95,7 +95,7 @@ this.form // => The instance of CustomizedForm
 | isFieldValidating | 判断一个输入控件是否在校验状态 | Function(name) |  |
 | resetFields | 重置一组输入控件的值（为 `initialValue`）与状态，如不传入参数，则重置所有组件 | Function(\[names: string\[]]) |  |
 | setFields | 设置一组输入控件的值与错误状态：[代码](https://github.com/react-component/form/blob/3b9959b57ab30b41d8890ff30c79a7e7c383cad3/examples/server-validate.js#L74-L79) | ({<br />&nbsp;&nbsp;\[fieldName\]: {value: any, errors: \[Error\] }<br />}) => void |  |
-| setFieldsValue | 设置一组输入控件的值（注意：不要在 `componentWillReceiveProps` 内使用，否则会导致死循环，[原因](https://github.com/ant-design/ant-design/issues/2985)） | ({ \[fieldName\]&#x3A; value }) => void |  |
+| setFieldsValue | 设置一组输入控件的值（注意：不要在 `componentWillReceiveProps` 内使用，否则会导致死循环，[原因](https://github.com/ant-design/ant-design/issues/2985)） | (<br />&nbsp;&nbsp;{ \[fieldName\]&#x3A; value },<br />&nbsp;&nbsp;callback: Function<br />) => void |  |
 | validateFields | 校验并获取一组输入域的值与 Error，若 fieldNames 参数为空，则校验全部组件 | (<br />&nbsp;&nbsp;\[fieldNames: string\[]],<br />&nbsp;&nbsp;\[options: object\],<br />&nbsp;&nbsp;callback(errors, values)<br />) => void |  |
 | validateFieldsAndScroll | 与 `validateFields` 相似，但校验完后，如果校验不通过的菜单域不在可见范围内，则自动滚动进可见范围 | 参考 `validateFields` |  |
 
@@ -205,7 +205,7 @@ validateFields(['field1', 'field2'], options, (errors, values) => {
 | labelCol | label 标签布局，同 `<Col>` 组件，设置 `span` `offset` 值，如 `{span: 3, offset: 12}` 或 `sm: {span: 3, offset: 12}`。在 3.14.0 之后，你可以通过 Form 的 labelCol 进行统一设置。当和 Form 同时设置时，以 FormItem 为准。 | [object](https://ant.design/components/grid/#Col) |  |  |
 | required | 是否必填，如不设置，则会根据校验规则自动生成 | boolean | false |  |
 | validateStatus | 校验状态，如不设置，则会根据校验规则自动生成，可选：'success' 'warning' 'error' 'validating' | string |  |  |
-| wrapperCol | 需要为输入控件设置布局样式时，使用该属性，用法同 labelCol。在 3.14.0 之后，你可以通过 Form 的 labelCol 进行统一设置。当和 Form 同时设置时，以 FormItem 为准。 | [object](https://ant.design/components/grid/#Col) |  |  |
+| wrapperCol | 需要为输入控件设置布局样式时，使用该属性，用法同 labelCol。在 3.14.0 之后，你可以通过 Form 的 wrapperCol 进行统一设置。当和 Form 同时设置时，以 FormItem 为准。 | [object](https://ant.design/components/grid/#Col) |  |  |
 
 ### 校验规则
 
@@ -229,7 +229,7 @@ validateFields(['field1', 'field2'], options, (errors, values) => {
 
 ```tsx
 import { Form } from 'antd';
-import { FormComponentProps } from 'antd/lib/form';
+import { FormComponentProps } from 'antd/es/form';
 
 interface UserFormProps extends FormComponentProps {
   age: number;
@@ -254,3 +254,25 @@ const App = Form.create<UserFormProps>({
   word-wrap: break-word;
 }
 </style>
+
+## FAQ
+
+### 自定义 validator 没有效果
+
+这是由于你的 `validator` 有错误导致 `callback` 没有执行到。你可以选择通过 `async` 返回一个 promise 或者使用 `try...catch` 进行错误捕获：
+
+```jsx
+validator: async (rule, value) => {
+  throw new Error('Something wrong!');
+}
+
+// or
+
+validator(rule, value, callback) => {
+  try {
+    throw new Error('Something wrong!');
+  } catch (err) {
+    callback(err);
+  }
+}
+```

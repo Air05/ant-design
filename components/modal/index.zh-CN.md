@@ -22,11 +22,12 @@ title: Modal
 | cancelText | 取消按钮文字 | string\|ReactNode | 取消 |  |
 | centered | 垂直居中展示 Modal | Boolean | `false` | 3.8.0 |
 | closable | 是否显示右上角的关闭按钮 | boolean | true |  |
+| closeIcon | 自定义关闭图标 | ReactNode | - | 3.22.0 |
 | confirmLoading | 确定按钮 loading | boolean | 无 |  |
 | destroyOnClose | 关闭时销毁 Modal 里的子元素 | boolean | false | 3.1.0 |
 | footer | 底部内容，当不需要默认底部按钮时，可以设为 `footer={null}` | string\|ReactNode | 确定取消按钮 |  |
 | forceRender | 强制渲染 Modal | boolean | false | 3.12.0 |
-| getContainer | 指定 Modal 挂载的 HTML 节点 | (instance): HTMLElement | () => document.body |  |
+| getContainer | 指定 Modal 挂载的 HTML 节点, false 为挂载在当前 dom | HTMLElement \| `() => HTMLElement` \| Selectors \| false | document.body | 3.20.2 |
 | keyboard | 是否支持键盘 esc 关闭 | boolean | true | 3.4.2 |
 | mask | 是否展示遮罩 | Boolean | true |  |
 | maskClosable | 点击蒙层是否允许关闭 | boolean | true |  |

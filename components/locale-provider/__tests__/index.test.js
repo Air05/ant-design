@@ -3,6 +3,8 @@ import React from 'react';
 import { mount } from 'enzyme';
 import moment from 'moment';
 import MockDate from 'mockdate';
+import { resetWarned } from '../../_util/warning';
+import mountTest from '../../../tests/shared/mountTest';
 import {
   LocaleProvider,
   Pagination,
@@ -41,6 +43,7 @@ import knIN from '../kn_IN';
 import koKR from '../ko_KR';
 import kuIQ from '../ku_IQ';
 import mnMN from '../mn_MN';
+import msMY from '../ms_MY';
 import nbNO from '../nb_NO';
 import neNP from '../ne-NP';
 import nlBE from '../nl_BE';
@@ -48,16 +51,19 @@ import nlNL from '../nl_NL';
 import plPL from '../pl_PL';
 import ptBR from '../pt_BR';
 import ptPT from '../pt_PT';
+import roRO from '../ro_RO';
 import ruRU from '../ru_RU';
 import skSK from '../sk_SK';
 import slSI from '../sl_SI';
 import srRS from '../sr_RS';
 import svSE from '../sv_SE';
+import taIN from '../ta_IN';
 import thTH from '../th_TH';
 import trTR from '../tr_TR';
 import ukUA from '../uk_UA';
 import viVN from '../vi_VN';
 import idID from '../id_ID';
+import lvLV from '../lv_LV';
 import zhCN from '../zh_CN';
 import zhTW from '../zh_TW';
 
@@ -87,6 +93,7 @@ const locales = [
   knIN,
   koKR,
   kuIQ,
+  msMY,
   mnMN,
   nbNO,
   neNP,
@@ -95,16 +102,19 @@ const locales = [
   plPL,
   ptBR,
   ptPT,
+  roRO,
   ruRU,
   skSK,
   slSI,
   srRS,
   svSE,
+  taIN,
   thTH,
   trTR,
   ukUA,
   viVN,
   idID,
+  lvLV,
   zhCN,
   zhTW,
 ];
@@ -145,13 +155,15 @@ const App = () => (
     <Transfer dataSource={[]} showSearch targetKeys={[]} render={item => item.title} />
     <Calendar fullscreen={false} value={moment()} />
     <Table dataSource={[]} columns={columns} />
-    <Modal title="Locale Modal" visible>
+    <Modal title="Locale Modal" visible getContainer={false}>
       <p>Locale Modal</p>
     </Modal>
   </div>
 );
 
 describe('Locale Provider', () => {
+  mountTest(() => <LocaleProvider><div /></LocaleProvider>);
+
   beforeAll(() => {
     MockDate.set(moment('2017-09-18T03:30:07.795'));
   });
@@ -228,5 +240,21 @@ describe('Locale Provider', () => {
     expect(wrapper.render()).toMatchSnapshot();
     wrapper.setState({ locale: null });
     expect(wrapper.render()).toMatchSnapshot();
+  });
+
+  it('warning if use LocaleProvider', () => {
+    const errorSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
+    resetWarned();
+
+    mount(
+      <LocaleProvider locale={{}}>
+        <div />
+      </LocaleProvider>,
+    );
+    expect(errorSpy).toHaveBeenCalledWith(
+      'Warning: [antd: LocaleProvider] `LocaleProvider` is deprecated. Please use `locale` with `ConfigProvider` instead: http://u.ant.design/locale',
+    );
+
+    errorSpy.mockRestore();
   });
 });

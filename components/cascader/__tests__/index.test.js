@@ -3,6 +3,7 @@ import { render, mount } from 'enzyme';
 import KeyCode from 'rc-util/lib/KeyCode';
 import Cascader from '..';
 import focusTest from '../../../tests/shared/focusTest';
+import mountTest from '../../../tests/shared/mountTest';
 
 const options = [
   {
@@ -45,6 +46,7 @@ function filter(inputValue, path) {
 
 describe('Cascader', () => {
   focusTest(Cascader);
+  mountTest(Cascader);
 
   it('popup correctly when panel is hidden', () => {
     const wrapper = mount(<Cascader options={options} />);
@@ -450,5 +452,37 @@ describe('Cascader', () => {
       'Warning: [antd: Cascader] Not found `value` in `options`.',
     );
     errorSpy.mockRestore();
+  });
+
+  // https://github.com/ant-design/ant-design/issues/17690
+  it('should not breaks when children is null', () => {
+    const optionsWithChildrenNull = [
+      {
+        value: 'zhejiang',
+        label: 'Zhejiang',
+        children: [
+          {
+            value: 'hangzhou',
+            label: 'Hangzhou',
+            children: null,
+          },
+        ],
+      },
+    ];
+    expect(() => {
+      mount(<Cascader options={optionsWithChildrenNull} />);
+    }).not.toThrow();
+  });
+
+  // https://github.com/ant-design/ant-design/issues/18176
+  it('have a notFoundContent that fit trigger input width', () => {
+    const wrapper = mount(<Cascader popupVisible options={[]} fieldNames={{ label: 'name', value: 'code', children: 'items' }} />);
+    const popupWrapper = mount(
+      wrapper
+        .find('Trigger')
+        .instance()
+        .getComponent(),
+    );
+    expect(popupWrapper.render()).toMatchSnapshot();
   });
 });

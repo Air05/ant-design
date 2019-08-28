@@ -2,6 +2,7 @@ import React from 'react';
 import MockDate from 'mockdate';
 import { mount } from 'enzyme';
 import Descriptions from '..';
+import mountTest from '../../../tests/shared/mountTest';
 
 jest.mock('enquire.js', () => {
   let that;
@@ -22,6 +23,8 @@ jest.mock('enquire.js', () => {
 });
 
 describe('Descriptions', () => {
+  mountTest(Descriptions);
+
   const errorSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
 
   afterEach(() => {
@@ -147,6 +150,15 @@ describe('Descriptions', () => {
         <Descriptions.Item label="Product" className="my-class">
           Cloud Database
         </Descriptions.Item>
+      </Descriptions>,
+    );
+    expect(wrapper).toMatchSnapshot();
+  });
+
+  it('Descriptions support colon', () => {
+    const wrapper = mount(
+      <Descriptions colon={false}>
+        <Descriptions.Item label="Product">Cloud Database</Descriptions.Item>
       </Descriptions>,
     );
     expect(wrapper).toMatchSnapshot();
