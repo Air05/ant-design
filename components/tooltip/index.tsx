@@ -59,6 +59,7 @@ export interface AbstractTooltipProps {
   children?: React.ReactNode;
   // align is a more higher api
   align?: TooltipAlignConfig;
+  /** Internal. Hide tooltip when hidden. This will be renamed in future. */
   destroyTooltipOnHide?: boolean;
 }
 
@@ -94,9 +95,9 @@ const splitObject = (obj: any, keys: string[]) => {
 function getDisabledCompatibleChildren(element: React.ReactElement<any>) {
   const elementType = element.type as any;
   if (
-    (elementType.__ANT_BUTTON ||
-      elementType.__ANT_SWITCH ||
-      elementType.__ANT_CHECKBOX ||
+    (elementType.__ANT_BUTTON === true ||
+      elementType.__ANT_SWITCH === true ||
+      elementType.__ANT_CHECKBOX === true ||
       element.type === 'button') &&
     element.props.disabled
   ) {
