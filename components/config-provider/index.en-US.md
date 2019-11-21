@@ -9,7 +9,7 @@ title: ConfigProvider
 
 ## Usage
 
-This component provides a configuration to all React components underneath itself via the [context API](https://facebook.github.io/react/docs/context.html), In the render tree all components will have access to the provided config.
+This component provides a configuration to all React components underneath itself via the [context API](https://facebook.github.io/react/docs/context.html). In the render tree all components will have access to the provided config.
 
 ```jsx
 import { ConfigProvider } from 'antd';
@@ -25,7 +25,7 @@ return (
 
 ### Content Security Policy
 
-Some component use dynamic style to support wave effect. You can config `csp` prop if Content Security Policy (CSP) is enabled:
+Some components use dynamic style to support wave effect. You can config `csp` prop if Content Security Policy (CSP) is enabled:
 
 ```jsx
 <ConfigProvider csp={{ nonce: 'YourNonceCode' }}>
@@ -44,3 +44,9 @@ Some component use dynamic style to support wave effect. You can config `csp` pr
 | locale | language package setting, you can find the packages in [antd/es/locale](http://unpkg.com/antd/es/locale/) | object | 3.21.0 |
 | prefixCls | set prefix class | string | ant | 3.12.0 |
 | pageHeader | Unify the ghost of pageHeader ,Ref [pageHeader](<(/components/page-header)> | { ghost:boolean } | 'true' | 3.24.0 |
+
+## FAQ
+
+#### Does the locale problem still exist in DatePicker even if ConfigProvider `locale` is used?
+
+Please make sure you set moment locale by `moment.locale('zh-cn')` or that you don't have two different versions of moment.
